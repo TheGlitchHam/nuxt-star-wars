@@ -1,73 +1,71 @@
 <template>
   <div class="container">
     <div>
-      <Logo />
       <h1 class="title">
-        nuxt-star-wars-films
+        Star Wars Films
       </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+      <h2 class="subtitle text-primary mb-5">
+        - A Nuxt.js project
+      </h2>
     </div>
+    <b-card-group deck>
+      <b-card
+        v-for="item in filmsOrderedByID"
+        :key="item.episode_id"
+        class="mb-5"
+      >
+        <b-list-group>
+          <b-list-group-item>
+            <b-card-title class="text-primary">
+              {{ item.title }}
+            </b-card-title>
+          </b-list-group-item>
+          <b-list-group-item>
+            <div class="opening-crawl text-primary">
+              {{ item.opening_crawl }}
+            </div> </b-list-group-item
+          ><b-list-group-item>
+            <strong>Episode:</strong> {{ item.episode_id }}
+          </b-list-group-item>
+          <b-list-group-item>
+            <strong>Director:</strong> {{ item.director }}
+          </b-list-group-item>
+          <b-list-group-item>
+            <strong>Producer:</strong> {{ item.producer }}
+          </b-list-group-item>
+          <b-list-group-item>
+            <strong>Release Date:</strong> {{ item.release_date }}
+          </b-list-group-item>
+        </b-list-group>
+      </b-card>
+    </b-card-group>
   </div>
 </template>
 
 <script>
-export default {}
+import axios from "~/plugins/axios";
+import _ from "lodash";
+
+export default {
+  components: {},
+  computed: {
+    filmsOrderedByID: function() {
+      const filmsOrdered = _.orderBy(this.films, "episode_id");
+      return filmsOrdered;
+    }
+  },
+  async asyncData({ error }) {
+    const films = await axios
+      .get("films/")
+      .then(response => ({
+        films: response.data.results
+      }))
+      .catch(e => {
+        error({ statusCode: 404, message: "Endpoint could not be resolved" });
+      });
+    return films;
+  }
+};
 </script>
 
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
+<style></style>

@@ -1,5 +1,9 @@
 # nuxt-star-wars-films
 
+## A Nuxt.js project for showing star wars movies
+
+### Build after Thomas A. Reinerts Tutorial on Nuxt.js https://www.tarcgn.de/tutorial-erstellung-einer-nuxt-js-application-zur-darstellung-aller-star-wars-filme-teil-1/
+
 ## Build Setup
 
 ```bash
